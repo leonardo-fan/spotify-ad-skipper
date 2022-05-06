@@ -16,7 +16,7 @@ def skipper(token):
     type = req.json()['currently_playing_type']
     progress = req.json()['progress_ms']
 
-    while type == 'ad':
+    if type == 'ad':
         time_until_5 = 5000 - progress
         
         if time_until_5 <= 0:
