@@ -1,4 +1,3 @@
-from math import exp
 import requests
 from requests.auth import HTTPBasicAuth
 import webbrowser
