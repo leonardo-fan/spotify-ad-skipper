@@ -24,7 +24,7 @@ def skipper(token):
             pyautogui.keyUp('nexttrack')
             print('ad skipped!')
         else:
-            t = threading.Timer(time_until_5, skipper(token))
+            t = threading.Timer(time_until_5 / 1000, skipper(token))
             t.start()
         
         req = requests.get("https://api.spotify.com/v1/me/player/currently-playing", params={
