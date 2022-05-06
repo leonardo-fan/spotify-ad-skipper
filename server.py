@@ -77,7 +77,7 @@ def set_token():
     timed_refresh(DATA_STORE['expires_in'])
 
     return {
-        'success': success
+        'success': f'{REDIRECT_URI}/skipper/start' if success else 'Fail'
     }
 
 @APP.route("/refresh", methods=['GET'])
