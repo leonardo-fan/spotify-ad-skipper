@@ -123,4 +123,4 @@ def skipper_start():
     }
 
 if __name__ == "__main__":
-    APP.run(port=8080, debug=True) # Do not edit this port
+    APP.run(port=8080) # Do not edit this port
