@@ -41,8 +41,8 @@ def auth():
 # helper to refresh token after expiry time using a valid refresh token
 def timed_refresh(expiry_time):
     def req_refresh():
-        resp = requests.get(f'{REDIRECT_URI}/refresh')
-        if resp.status_code != 200: 
+        resp = refresh_token()
+        if not resp['success']: 
             print('error: could not refresh token')
         print('token refreshed!')
     
@@ -76,14 +76,15 @@ def set_token():
 
     timed_refresh(DATA_STORE['expires_in'])
 
+    skipper_start()
+
     return {
-        'success': f'{REDIRECT_URI}/skipper/start' if success else 'Fail'
+        'success': 'skipper now running, close server to stop' if success else 'failed'
     }
 
 @APP.route("/refresh", methods=['GET'])
 def refresh_token():
     refresh_token = DATA_STORE['refresh_token']
-    print(refresh_token)
 
     reqTok = requests.post("https://accounts.spotify.com/api/token", data={
         'refresh_token': refresh_token,
@@ -105,14 +106,14 @@ def refresh_token():
         'success': success
     }
 
-@APP.route("/skipper/start", methods=['GET'])
+@APP.route("/skipper", methods=['GET'])
 def skipper_start():
     token = DATA_STORE['token']
 
     if not token:
-        requests.get(f'{REDIRECT_URI}/')
+        auth()
         return {
-            'message': 'please give access to the skipper, then refresh'
+            'message': 'please give access to the skipper'
         }
     
     # call skipper every 5 seconds
