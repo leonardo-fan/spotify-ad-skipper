@@ -32,3 +32,4 @@ REDIRECT_URI='http://localhost:{your port}'
   ```
 2. A browser window should pop up, sign in to your Spotify Account and allow access
 3. Now your Spotify Ads should be getting skipped after 5 seconds :)
+4. Ctrl+C the server when you are finished
