@@ -1,6 +1,7 @@
 import pyautogui
 import requests
 import threading
+import math
 
 def skipper(token):
     req = requests.get("https://api.spotify.com/v1/me/player/currently-playing", params={
@@ -17,14 +18,13 @@ def skipper(token):
     progress = req.json()['progress_ms']
 
     if type == 'ad':
-        time_until_5 = 5000 - progress
+        time_until_5 = math.ceil(5000 - progress)
         
         if time_until_5 <= 0:
-            pyautogui.keyDown('nexttrack')
-            pyautogui.keyUp('nexttrack')
+            pyautogui.press('nexttrack')
             print('ad skipped!')
         else:
-            t = threading.Timer(time_until_5 / 1000, skipper, [token])
+            t = threading.Timer(math.ceil(time_until_5 / 1000), skipper, [token])
             t.start()
         
         req = requests.get("https://api.spotify.com/v1/me/player/currently-playing", params={
