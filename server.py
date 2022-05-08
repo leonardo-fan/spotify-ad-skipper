@@ -124,4 +124,5 @@ def skipper_start():
     }
 
 if __name__ == "__main__":
+    webbrowser.open(f'{REDIRECT_URI}/skipper', new=2)
     APP.run(port=8080) # Do not edit this port
