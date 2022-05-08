@@ -12,14 +12,14 @@ Uses the Spotify API with OAuth 2.0 to skip Spotify ads for a user on a computer
 
 ## Dependencies
 1. pip install dependencies for the project
-```
+```bash
 pip install -r requirements.txt
 ```
 
 ## Configurations
 ### Create constants.py file in root directory
 1. Add the below to constants.py
-```
+```python
 CLIENT_ID='{your Spotify App Client ID}'
 CLIENT_SECRET='{your Spotify App Client Secret}'
 REDIRECT_URI='http://localhost:{your port}'
@@ -27,8 +27,8 @@ REDIRECT_URI='http://localhost:{your port}'
 
 # Using the Server
 1. Run the server
-  ```
-  python3 server.py
+  ```bash
+  python server.py
   ```
 2. A browser window should pop up, sign in to your Spotify Account and allow access
 3. Now your Spotify Ads should be getting skipped after 5 seconds :)
