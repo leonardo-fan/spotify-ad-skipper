@@ -41,13 +41,14 @@ def auth():
 # helper to refresh token after expiry time using a valid refresh token
 def timed_refresh(expiry_time):
     def req_refresh():
-        resp = refresh_token()
+        resp = requests.get(f'{REDIRECT_URI}/refresh')
         if not resp['success']: 
             print('error: could not refresh token')
-        print('token refreshed!')
+        else:
+            print('token refreshed!')
     
     if expiry_time > 0:
-        refresher = threading.Timer(expiry_time + 0.5, req_refresh)
+        refresher = threading.Timer(expiry_time, req_refresh)
         refresher.start()
 
 @APP.route("/callback", methods=['GET'])
@@ -84,10 +85,10 @@ def set_token():
 
 @APP.route("/refresh", methods=['GET'])
 def refresh_token():
-    refresh_token = DATA_STORE['refresh_token']
+    refresh_tok = DATA_STORE['refresh_token']
 
     reqTok = requests.post("https://accounts.spotify.com/api/token", data={
-        'refresh_token': refresh_token,
+        'refresh_token': refresh_tok,
         'grant_type': 'refresh_token', 
     }, headers={
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -102,12 +103,15 @@ def refresh_token():
 
     timed_refresh(DATA_STORE['expires_in'])
 
+    # restart skipper
+    requests.get(f'{REDIRECT_URI}/skipper')
+
     return {
         'success': success
     }
 
 @APP.route("/skipper", methods=['GET'])
-def skipper_start():
+def skipper_start(inter):
     token = DATA_STORE['token']
 
     if not token:
@@ -117,7 +121,10 @@ def skipper_start():
         }
     
     # call skipper every 5 seconds
-    setInterval(5, skipper, token)
+    inter = setInterval(5, skipper, token)
+    # cancel skipper after token invalid 
+    t = threading.Timer(DATA_STORE['expires_in'], inter.cancel)
+    t.start()
 
     return {
         'message': 'skipper now running, close server to stop'
