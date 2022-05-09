@@ -19,9 +19,10 @@ def skipper(token):
 
     if type == 'ad':
         # avoid bug where hangs at 0 seconds
-        pyautogui.press('playpause')
-        pyautogui.press('playpause')
-        
+        if progress == 0:
+            pyautogui.press('playpause')
+            pyautogui.press('playpause')
+
         time_until_5 = math.ceil(5000 - progress)
         
         if time_until_5 <= 0:
