@@ -111,7 +111,7 @@ def refresh_token():
     }
 
 @APP.route("/skipper", methods=['GET'])
-def skipper_start(inter):
+def skipper_start():
     token = DATA_STORE['token']
 
     if not token:
