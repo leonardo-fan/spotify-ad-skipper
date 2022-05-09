@@ -2,6 +2,7 @@ import pyautogui
 import requests
 import threading
 import math
+import json
 
 def skipper(token):
     req = requests.get("https://api.spotify.com/v1/me/player/currently-playing", params={
@@ -13,11 +14,14 @@ def skipper(token):
     })
     if req.status_code != 200:
         print('token invalid')
-    
     type = req.json()['currently_playing_type']
     progress = req.json()['progress_ms']
 
     if type == 'ad':
+        # avoid bug where hangs at 0 seconds
+        pyautogui.press('playpause')
+        pyautogui.press('playpause')
+        
         time_until_5 = math.ceil(5000 - progress)
         
         if time_until_5 <= 0:
