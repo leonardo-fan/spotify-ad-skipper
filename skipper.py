@@ -23,7 +23,7 @@ def skipper(token):
             pyautogui.press('playpause')
             pyautogui.press('playpause')
 
-        time_until_5 = math.ceil(5000 - progress)
+        time_until_5 = math.ceil(5500 - progress)
         
         if time_until_5 <= 0:
             pyautogui.press('nexttrack')
