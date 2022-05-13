@@ -17,14 +17,14 @@ def skipper(token):
         return
 
     try:
-        type = req.json()['currently_playing_type']
+        _type = req.json()['currently_playing_type']
         progress = req.json()['progress_ms']
     except KeyError:
         print('wrong data format returned')
         print(json.dumps(req.json(), indent=4))
         return
 
-    if type == 'ad':
+    if _type == 'ad':
         # avoid bug where hangs at 0 seconds
         if progress == 0:
             pyautogui.press('playpause')
@@ -51,5 +51,5 @@ def skipper(token):
             print('token invalid during ad')
             return
     
-        type = req.json()['currently_playing_type']
+        _type = req.json()['currently_playing_type']
         progress = req.json()['progress_ms']
